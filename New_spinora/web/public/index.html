@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinora - Создание розыгрышей</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Main Screen -->
+        <div id="main-screen" class="screen active">
+            <header class="app-header">
+                <h1>🎯 Spinora</h1>
+                <p>Создание розыгрышей "Колесо фортуны"</p>
+            </header>
+            
+            <div class="content">
+                <section class="posts-section">
+                    <div class="section-header">
+                        <h2>📝 Мои посты</h2>
+                        <button id="refresh-posts" class="icon-button">↻</button>
+                    </div>
+                    <div id="posts-list" class="posts-list">
+                        <div class="empty-state">
+                            <p>Нет сохраненных постов</p>
+                            <p class="hint">Создайте пост через бота</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <button id="create-giveaway-btn" class="primary-button">
+                    🎡 Создать розыгрыш
+                </button>
+            </div>
+        </div>
+
+        <!-- Wizard Screens -->
+        <div id="wizard-screen" class="screen">
+            <header class="wizard-header">
+                <button id="wizard-back" class="back-button">← Назад</button>
+                <h2 id="wizard-title">Создание розыгрыша</h2>
+                <span id="wizard-step">Шаг 1/4</span>
+            </header>
+            
+            <div class="wizard-content">
+                <!-- Step 1: Type Selection -->
+                <div id="step-1" class="wizard-step active">
+                    <h3>Выберите тип розыгрыша</h3>
+                    <div class="type-options">
+                        <div class="type-card" data-type="wheel">
+                            <div class="type-icon">🎡</div>
+                            <h4>Колесо фортуны</h4>
+                            <p>Классическое вращающееся колесо с призами</p>
+                        </div>
+                        <div class="type-card" data-type="case">
+                            <div class="type-icon">📦</div>
+                            <h4>Открытие кейса</h4>
+                            <p>Сундуки с случайными наградами</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Settings -->
+                <div id="step-2" class="wizard-step">
+                    <h3>Настройки розыгрыша</h3>
+                    <form id="settings-form" class="form">
+                        <div class="form-group">
+                            <label for="giveaway-title">Название розыгрыша *</label>
+                            <input type="text" id="giveaway-title" required placeholder="Введите название">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="giveaway-language">Язык</label>
+                            <select id="giveaway-language">
+                                <option value="ru">🇷🇺 Русский</option>
+                                <option value="en">🇬🇧 English</option>
+                                <option value="kz">🇰🇿 Қазақша</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Выберите пост *</label>
+                            <button type="button" id="select-post-btn" class="secondary-button">
+                                Выбрать пост
+                            </button>
+                            <div id="selected-post-preview" class="post-preview hidden">
+                                <div class="post-preview-content"></div>
+                                <button type="button" id="change-post-btn" class="small-button">Изменить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 3: Channels -->
+                <div id="step-3" class="wizard-step">
+                    <h3>Каналы публикации</h3>
+                    <div class="form-group">
+                        <label for="channel-input">Добавьте каналы (@username или chat_id)</label>
+                        <div class="input-with-button">
+                            <input type="text" id="channel-input" placeholder="@channel_username">
+                            <button type="button" id="add-channel-btn">+</button>
+                        </div>
+                        <div id="channels-list" class="channels-list"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Prizes -->
+                <div id="step-4" class="wizard-step">
+                    <h3>Призы</h3>
+                    <div class="form-group">
+                        <div id="prizes-list" class="prizes-list">
+                            <!-- Prize items will be added here dynamically -->
+                        </div>
+                        <button type="button" id="add-prize-btn" class="secondary-button">
+                            + Добавить приз
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wizard-footer">
+                <button id="wizard-prev" class="secondary-button">Назад</button>
+                <button id="wizard-next" class="primary-button">Далее</button>
+                <button id="wizard-finish" class="primary-button hidden">Создать розыгрыш</button>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div id="posts-overlay" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Выберите пост</h3>
+                    <button class="close-button" id="close-posts-modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div id="post-list-container">
+                        <div id="posts-modal-list" class="posts-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="success-modal" class="modal hidden">
+            <div class="modal-content success-modal">
+                <div class="modal-icon">🎉</div>
+                <h3>Розыгрыш создан!</h3>
+                <p id="success-message">Ваш розыгрыш успешно создан.</p>
+                <button id="success-close" class="primary-button">Продолжить</button>
+            </div>
+        </div>
+
+        <div id="loading-modal" class="modal hidden">
+            <div class="modal-content loading-modal">
+                <div class="spinner"></div>
+                <p>Создание розыгрыша...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "users": {
+    "360879418": {
+      "telegram_id": "360879418",
+      "username": "ateherass",
+      "first_name": "pissedoff",
+      "last_name": "",
+      "created_at": "2026-01-22T00:45:34.733425"
+    }
+  },
+  "post_drafts": {
+    "360879418": [
+      {
+        "id": 1,
+        "type": "text",
+        "file_id": null,
+        "text": "qwdqwbqwb",
+        "created_at": "2026-01-22T00:34:43.536775"
+      }
+    ]
+  },
+  "giveaway_drafts": {},
+  "giveaways": {
+    "360879418": [
+      {
+        "id": "G-0001",
+        "status": "created",
+        "config": {
+          "type": "wheel",
+          "title": "palupa",
+          "language": "ru",
+          "postId": 1,
+          "channels": [
+            "@carsnolimit"
+          ],
+          "prizes": [
+            {
+              "name": "кайцайца",
+              "qty": 9
+            },
+            {
+              "name": "айцайца",
+              "qty": 6
+            },
+            {
+              "name": "йцайцайц",
+              "qty": 6
+            }
+          ]
+        },
+        "created_at": "2026-01-22T00:37:45.558Z"
+      }
+    ]
+  },
+  "channels": {},
+  "counters": {
+    "post_id": 1,
+    "giveaway_id": 1
+  }
+}
